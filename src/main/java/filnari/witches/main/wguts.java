@@ -2,7 +2,12 @@ package filnari.witches.main;
 
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.LivingEntity;
+
+import java.io.File;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Witch;
@@ -16,10 +21,28 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class wguts extends JavaPlugin implements Listener {
 	@Override
+	// This is run when the server starts
 	public void onEnable() {
 		getLogger().info("Witches started");
 		getServer().getPluginManager().registerEvents(this, this);
-		// This is run when the server starts
+
+		// moving books to config.yml file
+		FileConfiguration config;
+		if (!new File(getDataFolder(),"config.yml").exists())
+		{
+			saveResource("config.yml",false);
+			getLogger().info("config.yml not found - creating a new config.");
+			// write fresh config here
+			saveDefaultConfig();
+		}else{
+			config = getConfig();
+			getLogger().info("config.yml found - loading");
+			// load config here
+		}
+		List<String> books = getConfig().getStringList("books");
+		getLogger().info("Loaded "+books.size()+"books");
+		//for (int i = 0; i < books.size(); i++)
+		//	getLogger().info("Loaded book: " + books.get(i));
 	}
 	@Override
 	public void onDisable() {
@@ -33,19 +56,21 @@ public class wguts extends JavaPlugin implements Listener {
 	{
 	LivingEntity entity = event.getEntity();
 	Player player = entity.getKiller();
+	// String[] books = { "Book1", "Book2", "Book3" };
+
 	if (entity instanceof Witch && player != null) {
 		player.sendMessage("You killed a witch");
 		
 		// Make the meta data object
 		ItemFactory factory = Bukkit.getItemFactory();
 		BookMeta meta = (BookMeta) factory.getItemMeta(Material.WRITTEN_BOOK);
-		meta.setAuthor("Glinda");
-		meta.setTitle("Gates Made Easy");
+		meta.setAuthor("Witch Hazel");
+		meta.setTitle("Gate Secrets");
 		
 		// build the pages
 		StringBuilder page1 = new StringBuilder();
 		String p1a = "The secret to quick travel around the world is §9/gate§0.\n\n";
-		String p1b = "But, I'd be careful, you never know where a gate may be buried or hidden...\n\n";
+		String p1b = "But, I'd be careful, old gates may be buried or hidden...\n\n";
 		String p1c = "Some say that there are many gates around the world, but one we do know about is...";
 		page1.append(p1a).append(p1b).append(p1c);
 		StringBuilder page2 = new StringBuilder();
