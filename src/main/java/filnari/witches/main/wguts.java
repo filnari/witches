@@ -89,6 +89,8 @@ public class wguts extends JavaPlugin implements Listener {
 				page2.append("Found on a forested isle in the far northeast, you will find §aLafo§0.");
 				break;
 			default:
+				page2.append("Nothing to see here. Move along.");
+				break;
 		}
 		
 		// convert page text to meta data
