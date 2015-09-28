@@ -1,5 +1,6 @@
 # witches
 Custom Witches plugin
+
 This is a custom plugin using the Craftbukkit API of a Minecraft server.
 
 Built on Minecraft 1.8.8 & Craftbukkit 1.8.8
