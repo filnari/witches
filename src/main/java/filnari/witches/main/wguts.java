@@ -20,6 +20,7 @@ import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class wguts extends JavaPlugin implements Listener {
+	public List<String> books;
 	@Override
 	// This is run when the server starts
 	public void onEnable() {
@@ -39,8 +40,8 @@ public class wguts extends JavaPlugin implements Listener {
 			getLogger().info("config.yml found - loading");
 			// load config here
 		}
-		List<String> books = getConfig().getStringList("books");
-		getLogger().info("Loaded "+books.size()+"books");
+		books = getConfig().getStringList("books");
+		getLogger().info("Loaded "+books.size()+" books");
 		//for (int i = 0; i < books.size(); i++)
 		//	getLogger().info("Loaded book: " + books.get(i));
 	}
@@ -80,8 +81,9 @@ public class wguts extends JavaPlugin implements Listener {
 		
 		int random = (int) (Math.random() * 10 + 1);
 		// getLogger().info("random is " + random);
+		page2.append(books.get(random));
 		
-		switch (random) {
+/*		switch (random) {
 		// color code §1 §0
 			case 1:
 				page2.append("Far to the southeast, there lies a wild unexplored peninsula, known to some as §aMonton§0.");
@@ -116,7 +118,7 @@ public class wguts extends JavaPlugin implements Listener {
 			default:
 				page2.append("Nothing to see here. Move along.");
 				break;
-		}
+		} */
 		
 		// convert page text to meta data
 		// meta.setPages(page1.toString());
