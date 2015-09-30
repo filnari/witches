@@ -8,6 +8,7 @@ import org.bukkit.entity.LivingEntity;
 import java.io.File;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -23,6 +24,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class wguts extends JavaPlugin implements Listener {
 	
 	public List<String> books;
+	public List<String> authors;
+	public List<String> volumes;
+	public List<String> titles;
 	public int chance;
 	
 	@Override
@@ -46,7 +50,17 @@ public class wguts extends JavaPlugin implements Listener {
 		}
 		// Read the books from config.yml
 		books = getConfig().getStringList("books");
-		getLogger().info("Loaded "+books.size()+" books");
+		
+		// Read the authors from config.yml
+		authors = getConfig().getStringList("authors");
+		
+		// Read the volume names from config.yml
+		volumes = getConfig().getStringList("volumes");
+		
+		// Read the titles from config.yml
+		titles = getConfig().getStringList("titles");
+		
+		getLogger().info("Loaded "+authors.size()+" authors, "+books.size()+" books, "+volumes.size()+" volumes, and "+titles.size()+" titles.");
 		
 		// get the drop chance for books from config.yml
 		chance = getConfig().getInt("dropchance");
@@ -76,18 +90,31 @@ public class wguts extends JavaPlugin implements Listener {
 		// Make the meta data object
 		ItemFactory factory = Bukkit.getItemFactory();
 		BookMeta meta = (BookMeta) factory.getItemMeta(Material.WRITTEN_BOOK);
-		meta.setAuthor("Witch Hazel");
-		meta.setTitle("Gate Secrets");
+		
+		// Set the author from random names in 'authors'
+		int r = ThreadLocalRandom.current().nextInt(0,authors.size());
+		meta.setAuthor(authors.get(r));
+		// meta.setAuthor("Witch Hazel");
+		
+		r = ThreadLocalRandom.current().nextInt(0,volumes.size());
+		meta.setTitle(volumes.get(r));
+		// meta.setTitle("Gate Secrets");
 		
 		// build the first page
 		StringBuilder page1 = new StringBuilder();
-		String p1a = "The secret to quick travel around the world is §9/gate§0.\n\n";
-		String p1b = "But, I'd be careful, old gates may be buried or hidden...\n\n";
-		String p1c = "Some say that there are many gates around the world, but one we do know about is...";
+		
+		r = ThreadLocalRandom.current().nextInt(0,titles.size());
+		String p1a = "§l" + titles.get(r) + "§0\n\n";
+		
+		String p1b = "The secret to quick travel around the world is §9/gate§0.\n\n";
+		String p1c = "But, I'd be careful, old gates may be buried or hidden...\n\n";
 		page1.append(p1a).append(p1b).append(p1c);
 
-		// Choose a random second page
+		// build the second page
 		StringBuilder page2 = new StringBuilder();
+		String p2a = "Some say that there are many gates around the world, but one we do know about is...\n\n";	
+		page2.append(p2a);
+		
 		int random = (int) (Math.random() * books.size());
 		getLogger().info("Dropping book #" + random);
 		page2.append(books.get(random));
