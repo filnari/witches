@@ -7,7 +7,7 @@ import org.bukkit.entity.LivingEntity;
 
 import java.io.File;
 import java.util.List;
-import java.util.Random;
+// import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 import org.bukkit.Bukkit;
@@ -79,61 +79,64 @@ public class wguts extends JavaPlugin implements Listener {
 	LivingEntity entity = event.getEntity();
 	Player player = entity.getKiller();
 	
-	Random rn = new Random();
+	// Random rn = new Random();
 
-	double xx = (double) chance / (double) 100;
-	double yy = Math.random();
-	getLogger().info("testing " + yy + " < " + xx);
-	if (entity instanceof Witch && player != null && yy < xx ) {
-		// player.sendMessage("You killed a witch");
+	
+	if (entity instanceof Witch && player != null )
+		{
+		double xx = (double) chance / (double) 100;
+		double yy = Math.random();
+		// getLogger().info("testing " + yy + " < " + xx);
+		if (yy < xx)
+			{
+			// player.sendMessage("You killed a witch");
 		
-		// Make the meta data object
-		ItemFactory factory = Bukkit.getItemFactory();
-		BookMeta meta = (BookMeta) factory.getItemMeta(Material.WRITTEN_BOOK);
+			// Make the meta data object
+			ItemFactory factory = Bukkit.getItemFactory();
+			BookMeta meta = (BookMeta) factory.getItemMeta(Material.WRITTEN_BOOK);
 		
-		// Set the author from random names in 'authors'
-		int r = ThreadLocalRandom.current().nextInt(0,authors.size());
-		meta.setAuthor(authors.get(r));
-		// meta.setAuthor("Witch Hazel");
+			// Set the author from random names in 'authors'
+			int r = ThreadLocalRandom.current().nextInt(0,authors.size());
+			meta.setAuthor(authors.get(r));
+			// meta.setAuthor("Witch Hazel");
 		
-		r = ThreadLocalRandom.current().nextInt(0,volumes.size());
-		meta.setTitle(volumes.get(r));
-		// meta.setTitle("Gate Secrets");
+			r = ThreadLocalRandom.current().nextInt(0,volumes.size());
+			meta.setTitle(volumes.get(r));
+			// meta.setTitle("Gate Secrets");
 		
-		// build the first page
-		StringBuilder page1 = new StringBuilder();
-		
-		r = ThreadLocalRandom.current().nextInt(0,titles.size());
-		String p1a = "§l" + titles.get(r) + "§0\n\n";
-		
-		String p1b = "The secret to quick travel around the world is §9/gate§0.\n\n";
-		String p1c = "But, I'd be careful, old gates may be buried or hidden...\n\n";
-		page1.append(p1a).append(p1b).append(p1c);
+			// build the first page
+			StringBuilder page1 = new StringBuilder();
 
-		// build the second page
-		StringBuilder page2 = new StringBuilder();
-		String p2a = "Some say that there are many gates around the world, but one we do know about is...\n\n";	
-		page2.append(p2a);
+			r = ThreadLocalRandom.current().nextInt(0,titles.size());
+			String p1a = "§l" + titles.get(r) + "§0\n\n";
 		
-		int random = (int) (Math.random() * books.size());
-		getLogger().info("Dropping book #" + random);
-		page2.append(books.get(random));
-		
-		// convert page text to meta data
-		meta.setPages(page1.toString(),page2.toString());
-		
-		// create the book item
-		ItemStack item = new ItemStack(Material.WRITTEN_BOOK);
-		
-		// apply the page meta data to the book
-		item.setItemMeta(meta);
-		
-		// To give it to the player: player.getInventory().addItem(item);
-		// we just drop it on the ground
-		World world = event.getEntity().getWorld();
-		world.dropItem(entity.getLocation(),item);
+			String p1b = "The secret to quick travel around the world is §9/gate§0.\n\n";
+			String p1c = "But, beware, old gates may be buried or hidden...\n\n";
+			page1.append(p1a).append(p1b).append(p1c);
 
-				
+			// build the second page
+			StringBuilder page2 = new StringBuilder();
+			String p2a = "Some say that there are many gates around the world, but one we do know about is...\n\n";	
+			page2.append(p2a);
+		
+			int random = (int) (Math.random() * books.size());
+			getLogger().info("Dropping book #" + random);
+			page2.append(books.get(random));
+		
+			// convert page text to meta data
+			meta.setPages(page1.toString(),page2.toString());
+		
+			// create the book item
+			ItemStack item = new ItemStack(Material.WRITTEN_BOOK);
+		
+			// apply the page meta data to the book
+			item.setItemMeta(meta);
+		
+			// To give it to the player: player.getInventory().addItem(item);
+			// we just drop it on the ground
+			World world = event.getEntity().getWorld();
+			world.dropItem(entity.getLocation(),item);
+			}
 		}
 	}
 	
