@@ -1,4 +1,4 @@
-package filnari.witches.main;
+package org.filnari.witches.main;
 
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -36,6 +36,7 @@ public class wguts extends JavaPlugin implements Listener {
 		getServer().getPluginManager().registerEvents(this, this);
 
 		// moving books to config.yml file
+		@SuppressWarnings("unused")
 		FileConfiguration config;
 		if (!new File(getDataFolder(),"config.yml").exists())
 		{
